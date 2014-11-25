@@ -31,6 +31,21 @@ var height = 4,
     totalWidth = margin.left + padding.left + width +padding.right + margin.right,
     totalHeight = margin.top + padding.top + height + padding.bottom + margin.bottom;
 
+var x = d3.scale.linear()
+    .domain(d3.extent(data.map(function(d) { return d.x; })))
+    .range([0, width])
+    .nice();
+var y = d3.scale.linear()
+    .domain(d3.extent(data.map(function(d) { return d.y; })))
+    .range([height, 0])
+    .nice();
+
+var xAxis = d3.svg.axis()
+    .tickSize(4/72)
+    .tickPadding(2/72)
+    .scale(x)
+    .ticks(5);
+
 var svg = d3.select("#plot").append("svg")
     .attr("width", totalWidth + unit)
     .attr("height", totalHeight + unit)
@@ -59,18 +74,10 @@ var graph = svg.append("g")
     .attr("transform", "translate(" +
           (margin.left + padding.left) + "," +
           (margin.top + padding.top) + ")")
-graph.append("rect")
-    .attr("width", width)
-    .attr("height", height)
-    .style("fill", "teal")
-    .style("opacity", 0.01);
-var x = d3.scale.linear()
-    .domain(d3.extent(data.map(function(d) { return d.x; })))
-    .range([0, width]);
-var y = d3.scale.linear()
-    .domain(d3.extent(data.map(function(d) { return d.y; })))
-    .range([height, 0]);
-
+graph.append("g")
+    .attr("transform", "translate(0," + (height + padding.bottom) + ")")
+    .attr("class", "x axis")
+    .call(xAxis);
 graph.selectAll(".point")
     .data(data)
   .enter().append("circle")
