@@ -45,6 +45,12 @@ var xAxis = d3.svg.axis()
     .tickPadding(2/72)
     .scale(x)
     .ticks(5);
+var yAxis = d3.svg.axis()
+    .orient("left")
+    .tickSize(4/72)
+    .tickPadding(2/72)
+    .scale(y)
+    .ticks(4);
 
 var svg = d3.select("#plot").append("svg")
     .attr("width", totalWidth + unit)
@@ -78,6 +84,10 @@ graph.append("g")
     .attr("transform", "translate(0," + (height + padding.bottom) + ")")
     .attr("class", "x axis")
     .call(xAxis);
+graph.append("g")
+    .attr("transform", "translate(" + (-0.2 * margin.left) + ",0)")
+    .attr("class", "y axis")
+    .call(yAxis);
 graph.selectAll(".point")
     .data(data)
   .enter().append("circle")
